@@ -409,7 +409,9 @@ if(UNIX)
       set(CPACK_GENERATOR "RPM")
       set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}.fc${RELEASE}.${CPACK_RPM_PACKAGE_ARCHITECTURE})
 
-      # Set Scientific-Linux-specific information (see http://www.cmake.org/Wiki/CMake:CPackPackageGenerators)
+    elseif(DISTRIBUTION STREQUAL "Scientific")
+
+     # Set Scientific-Linux-specific information (see http://www.cmake.org/Wiki/CMake:CPackPackageGenerators)
       if(ARCHITECTURE MATCHES ".*x86_64.*")
         set(CPACK_RPM_PACKAGE_ARCHITECTURE "x86_64")
       else()
