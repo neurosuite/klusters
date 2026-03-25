@@ -309,7 +309,7 @@ void KlustersView::print(QPrinter *pPrinter, const QString& filePath, bool white
         newViewport.setBottom(printPainter.viewport().bottom() - 20);
         printPainter.setViewport(newViewport);
         widget->print(printPainter,width,height,whiteBackground);
-        printPainter.resetMatrix();
+        printPainter.resetTransform();
 
         printPainter.setFont(f);
         printPainter.setPen(Qt::black);
@@ -345,7 +345,7 @@ void KlustersView::print(QPrinter *pPrinter, const QString& filePath, bool white
     //Print the trace view if exists
     if(isThereTraceView){
         pPrinter->newPage();
-        printPainter.resetMatrix();
+        printPainter.resetTransform();
         //Print the TraceView
         traceWidget->print(printPainter,width,height,filePath,whiteBackground);
     }

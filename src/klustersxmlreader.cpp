@@ -50,7 +50,7 @@ bool KlustersXmlReader::parseFile(const QFile& file,fileType type){
     int errorRow;
     int errorCol;
     if ( !docElement.setContent( &input, &errorMsg, &errorRow, &errorCol ) ) {
-        qWarning() << "Unable to load document.Parse error in " <<  input.fileName() << ", line " << errorRow << ", col " << errorCol << ": " << errorMsg << endl;
+        qWarning() << "Unable to load document.Parse error in " <<  input.fileName() << ", line " << errorRow << ", col " << errorCol << ": " << errorMsg;
         return false;
     }
 

@@ -30,10 +30,11 @@
 #include <qtextstream.h>
 #include <qstringlist.h>
 #include <QString>
-#include <qregexp.h>
+#include <QRegularExpression>
 
 #include <QList>
 #include <QDebug>
+#include <algorithm>
 
 //kde include files
 
@@ -167,7 +168,7 @@ bool Data::configure(QFile& parXFile,QFile& parFile,QString& errorInformation){
     int lineCounter = 0;
     QString line;
     for(line = parX.readLine(); !line.isNull();line = parX.readLine()){
-        parXData.append(line.split(" ",QString::SkipEmptyParts));
+        parXData.append(line.split(" ",Qt::SkipEmptyParts));
         lineCounter ++;
     }
     //The parX file has to contain at leat 9 lines, otherwise there is a problem
@@ -198,7 +199,7 @@ bool Data::configure(QFile& parXFile,QFile& parFile,QString& errorInformation){
 
     lineCounter = 0;
     for(line = par.readLine(); !line.isNull();line = par.readLine()){
-        parData.append(line.split(" ",QString::SkipEmptyParts));
+        parData.append(line.split(" ",Qt::SkipEmptyParts));
         lineCounter ++;
     }
 
@@ -573,7 +574,7 @@ void Data::minMaxDimensionCalculation(QList<int> modifiedClusters){
     }
     mutex.unlock();
 
-    qDebug() << "in minMaxDimensionCalculation end" << endl;
+    qDebug() << "in minMaxDimensionCalculation end";
 
 }
 
@@ -1140,7 +1141,7 @@ void Data::deleteSpikesFromClusters(QRegion& region, const QList <int>& clusters
 
     //Iteration on the clusters in decreasing order
     QList<dataType> clusters = clusterInfoMap->keys();
-    qSort(clusters);
+    std::sort(clusters.begin(), clusters.end());
     int nbClusters = clusters.size();
 
     for(int i = nbClusters - 1; i >=0 ; --i){
@@ -2334,7 +2335,7 @@ bool Data::saveClusters(FILE* clusterFile){
         for(long i = 1; i <= nbSpikes ; ++i)
             writeStatus = fprintf(clusterFile, "%i\n",static_cast<int>((spikesByClusterTemp)(2,i)));
     }
-    qDebug() << "save clu file: "<<Timer() << endl;
+    qDebug() << "save clu file: "<<Timer();
     if(writeStatus > 0) return 1;
     else return 0;
 }
@@ -3480,13 +3481,13 @@ void Data::createFeatureFile(QList<int>& clustersToRecluster,QFile& fetFile){
 
     //Write all the features to file
     QTextStream fetStream(&fetFile);
-    fetStream <<nbDimensions<< endl;
+    fetStream <<nbDimensions<< Qt::endl;
     //loop on all the spikes
     for(dataType i = 1; i <= reclusteringNbSpikes;++i){
         dataType featuresRowIndex = reclusteringSpikesByCluster(1,i);
         //loop on the features of the current spike
         for(int j = 1; j < nbDimensions;++j) fetStream << features(featuresRowIndex,j)<<" ";
-        fetStream << features(featuresRowIndex,nbDimensions)<<endl;
+        fetStream << features(featuresRowIndex,nbDimensions)<< Qt::endl;
     }
 }
 

@@ -44,10 +44,10 @@ public:
         const QString s = QString::fromLatin1("%1-%2").arg(x).arg(y);
         return s;
     }
-    bool operator==(const Pair& p){
+    bool operator==(const Pair& p) const {
         return (x == p.x && y == p.y);
     }
-    bool operator <(const Pair& p){
+    bool operator <(const Pair& p) const {
         return ((x < p.x) || (x == p.x) && (y < p.y));
     }
     bool operator <=(const Pair& p){

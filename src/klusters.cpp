@@ -29,6 +29,8 @@
 
 // include files for QT
 #include <QDir>
+#include <QActionGroup>
+#include <QPageLayout>
 
 #include <qtooltip.h>
 #include <qtoolbutton.h>
@@ -61,6 +63,7 @@
 #include <QFileDialog>
 #include <QTime>
 #include <QSettings>
+#include <algorithm>
 
 extern int nbUndo;
 
@@ -173,7 +176,7 @@ void KlustersApp::createMenus()
     //File Menu
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
     mOpenAction = fileMenu->addAction(tr("&Open..."));
-    mOpenAction->setIcon(QPixmap(":/shared-icons/document-open"));
+    mOpenAction->setIcon(QIcon::fromTheme("document-open", QIcon(":/shared-icons/document-open")));
     mOpenAction->setShortcut(QKeySequence::Open);
     connect(mOpenAction, SIGNAL(triggered()), this, SLOT(slotFileOpen()));
 
@@ -186,56 +189,56 @@ void KlustersApp::createMenus()
 
 
     mImportFile = fileMenu->addAction(tr("&Import File"));
-    mImportFile->setShortcut(Qt::CTRL + Qt::Key_I);
+    mImportFile->setShortcut(Qt::CTRL | Qt::Key_I);
     connect(mImportFile,SIGNAL(triggered()), this,SLOT(slotFileImport()));
 
     fileMenu->addSeparator();
 
     mSaveAction = fileMenu->addAction(tr("Save..."));
-    mSaveAction->setIcon(QPixmap(":/shared-icons/document-save"));
+    mSaveAction->setIcon(QIcon::fromTheme("document-save", QIcon(":/shared-icons/document-save")));
     mSaveAction->setShortcut(QKeySequence::Save);
     connect(mSaveAction, SIGNAL(triggered()), this, SLOT(slotFileSave()));
 
     mSaveAsAction = fileMenu->addAction(tr("&Save As..."));
-    mSaveAsAction->setIcon(QPixmap(":/shared-icons/document-save-as"));
+    mSaveAsAction->setIcon(QIcon::fromTheme("document-save-as", QIcon(":/shared-icons/document-save-as")));
     connect(mSaveAsAction, SIGNAL(triggered()), this, SLOT(slotFileSaveAs()));
 
     mRenumberAndSave = fileMenu->addAction(tr("Re&number and Save"));
-    mRenumberAndSave->setIcon(QIcon(QPixmap("filesave.png")));
-    mRenumberAndSave->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_S);
+    mRenumberAndSave->setIcon(QIcon::fromTheme("document-save", QIcon(":/shared-icons/document-save")));
+    mRenumberAndSave->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_S);
     connect(mRenumberAndSave,SIGNAL(triggered()), this,SLOT(slotFileRenumberAndSave()));
 
     fileMenu->addSeparator();
 
     mPrintAction = fileMenu->addAction(tr("Print"));
-    mPrintAction->setIcon(QPixmap(":/shared-icons/document-print"));
+    mPrintAction->setIcon(QIcon::fromTheme("document-print", QIcon(":/shared-icons/document-print")));
     mPrintAction->setShortcut(QKeySequence::Print);
     connect(mPrintAction, SIGNAL(triggered()), this, SLOT(slotFilePrint()));
 
     fileMenu->addSeparator();
 
     mCloseAction = fileMenu->addAction(tr("Close"));
-    mCloseAction->setIcon(QPixmap(":/shared-icons/document-close"));
+    mCloseAction->setIcon(QIcon::fromTheme("document-close", QIcon(":/shared-icons/document-close")));
     connect(mCloseAction, SIGNAL(triggered()), this, SLOT(slotFileClose()));
 
     fileMenu->addSeparator();
 
     mQuitAction = fileMenu->addAction(tr("Quit"));
     mQuitAction->setShortcut(QKeySequence::Quit);
-    mQuitAction->setIcon(QPixmap(":/shared-icons/window-close"));
+    mQuitAction->setIcon(QIcon::fromTheme("window-close", QIcon(":/shared-icons/window-close")));
     connect(mQuitAction, SIGNAL(triggered()), this, SLOT(slotFileQuit()));
 
     //Edit Menu
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
 
     mUndo = editMenu->addAction(tr("Undo"));
-    mUndo->setIcon(QPixmap(":/shared-icons/edit-undo"));
+    mUndo->setIcon(QIcon::fromTheme("edit-undo", QIcon(":/shared-icons/edit-undo")));
     mUndo->setShortcut(QKeySequence::Undo);
     connect(mUndo, SIGNAL(triggered()), this, SLOT(slotUndo()));
 
     mRedo = editMenu->addAction(tr("Redo"));
     mRedo->setShortcut(QKeySequence::Redo);
-    mRedo->setIcon(QPixmap(":/shared-icons/edit-redo"));
+    mRedo->setIcon(QIcon::fromTheme("edit-redo", QIcon(":/shared-icons/edit-redo")));
     connect(mRedo, SIGNAL(triggered()), this, SLOT(slotRedo()));
 
     editMenu->addSeparator();
@@ -247,29 +250,29 @@ void KlustersApp::createMenus()
     editMenu->addSeparator();
 
     mSelectAllExceptAction = editMenu->addAction(tr("Select All Except 0 and 1"));
-    mSelectAllExceptAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_A);
+    mSelectAllExceptAction->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_A);
     connect(mSelectAllExceptAction, SIGNAL(triggered()), this, SLOT(slotSelectAllWO01()));
 
 
     //Actions menu
     QMenu *actionMenu = menuBar()->addMenu(tr("&Actions"));
     mDeleteArtifact = actionMenu->addAction(tr("Delete &Artifact Cluster(s)"));
-    mDeleteArtifact->setIcon(QIcon(":/icons/delete_artefact"));
-    mDeleteArtifact->setShortcut(Qt::SHIFT + Qt::Key_Delete);
+    mDeleteArtifact->setIcon(QIcon::fromTheme("edit-delete", QIcon(":/icons/delete_artefact")));
+    mDeleteArtifact->setShortcut(Qt::SHIFT | Qt::Key_Delete);
     connect(mDeleteArtifact,SIGNAL(triggered()), clusterPalette,SLOT(moveClustersToArtefact()));
 
     mDeleteNoisy = actionMenu->addAction(tr("Delete &Noisy Cluster(s)"));
-    mDeleteNoisy->setIcon(QIcon(":/icons/delete_noise"));
+    mDeleteNoisy->setIcon(QIcon::fromTheme("edit-delete", QIcon(":/icons/delete_noise")));
     mDeleteNoisy->setShortcut(Qt::Key_Delete);
     connect(mDeleteNoisy,SIGNAL(triggered()), clusterPalette,SLOT(moveClustersToNoise()));
 
     mGroupeClusters = actionMenu->addAction(tr("&Group Clusters"));
-    mGroupeClusters->setIcon(QIcon(":/icons/group"));
+    mGroupeClusters->setIcon(QIcon::fromTheme("object-group", QIcon(":/icons/group")));
     mGroupeClusters->setShortcut(Qt::Key_G);
     connect(mGroupeClusters,SIGNAL(triggered()), clusterPalette,SLOT(groupClusters()));
 
     mUpdateDisplay = actionMenu->addAction(tr("&Update Display"));
-    mUpdateDisplay->setIcon(QIcon(":/icons/update"));
+    mUpdateDisplay->setIcon(QIcon::fromTheme("view-refresh", QIcon(":/icons/update")));
     connect(mUpdateDisplay,SIGNAL(triggered()), clusterPalette,SLOT(updateClusters()));
 
     actionMenu->addSeparator();
@@ -281,14 +284,14 @@ void KlustersApp::createMenus()
     actionMenu->addSeparator();
 
     mUpdateErrorMatrix = actionMenu->addAction(tr("&Update Error Matrix"));
-    mUpdateErrorMatrix->setIcon(QIcon(":/icons/grouping_assistant_update"));
+    mUpdateErrorMatrix->setIcon(QIcon::fromTheme("view-refresh", QIcon(":/icons/grouping_assistant_update")));
     mUpdateErrorMatrix->setShortcut(Qt::Key_U);
     connect(mUpdateErrorMatrix,SIGNAL(triggered()), this,SLOT(slotUpdateErrorMatrix()));
 
     actionMenu->addSeparator();
 
     mReCluster = actionMenu->addAction(tr("Re&cluster"));
-    mReCluster->setShortcut(Qt::SHIFT  + Qt::Key_R);
+    mReCluster->setShortcut(Qt::SHIFT | Qt::Key_R);
     connect(mReCluster,SIGNAL(triggered()), this,SLOT(slotRecluster()));
 
     mAbortReclustering = actionMenu->addAction(tr("&Abort Reclustering"));
@@ -298,38 +301,38 @@ void KlustersApp::createMenus()
     //Tools menu
     QMenu *toolsMenu = menuBar()->addMenu(tr("&Tools"));
     mZoomAction = toolsMenu->addAction(tr("Zoom"));
-    mZoomAction->setIcon(QIcon(":/icons/zoom_tool.png"));
+    mZoomAction->setIcon(QIcon::fromTheme("zoom-in", QIcon(":/icons/zoom_tool.png")));
     mZoomAction->setShortcut(Qt::Key_Z);
     connect(mZoomAction,SIGNAL(triggered()), this,SLOT(slotZoom()));
 
     toolsMenu->addSeparator();
 
     mNewCluster = toolsMenu->addAction(tr("New Cluster"));
-    mNewCluster->setIcon(QIcon(":/icons/new_cluster"));
+    mNewCluster->setIcon(QIcon::fromTheme("list-add", QIcon(":/icons/new_cluster")));
     mNewCluster->setShortcut(Qt::Key_C);
     connect(mNewCluster,SIGNAL(triggered()), this,SLOT(slotSingleNew()));
 
     mSplitClusters = toolsMenu->addAction(tr("&Split Clusters"));
-    mSplitClusters->setIcon(QIcon(":/icons/new_clusters"));
+    mSplitClusters->setIcon(QIcon::fromTheme("split", QIcon(":/icons/new_clusters")));
     mSplitClusters->setShortcut(Qt::Key_S);
     connect(mSplitClusters,SIGNAL(triggered()), this,SLOT(slotMultipleNew()));
 
     toolsMenu->addSeparator();
 
     mDeleteArtifactSpikes = toolsMenu->addAction(tr("Delete &Artifact Spikes"));
-    mDeleteArtifactSpikes->setIcon(QIcon(":/icons/delete_artefact_tool"));
+    mDeleteArtifactSpikes->setIcon(QIcon::fromTheme("edit-delete", QIcon(":/icons/delete_artefact_tool")));
     mDeleteArtifactSpikes->setShortcut(Qt::Key_A);
     connect(mDeleteArtifactSpikes,SIGNAL(triggered()), this,SLOT(slotDeleteArtefact()));
 
     mDeleteNoisySpikes = toolsMenu->addAction(tr("Delete &Noisy Spikes"));
-    mDeleteNoisySpikes->setIcon(QIcon(":/icons/delete_noise_tool"));
+    mDeleteNoisySpikes->setIcon(QIcon::fromTheme("edit-delete", QIcon(":/icons/delete_noise_tool")));
     mDeleteNoisySpikes->setShortcut(Qt::Key_N);
     connect(mDeleteNoisySpikes,SIGNAL(triggered()), this,SLOT(slotDeleteNoise()));
 
     toolsMenu->addSeparator();
 
     mSelectTime = toolsMenu->addAction(tr("Select Time"));
-    mSelectTime->setIcon(QIcon(":/icons/time_tool"));
+    mSelectTime->setIcon(QIcon::fromTheme("appointment-new", QIcon(":/icons/time_tool")));
     mSelectTime->setShortcut(Qt::Key_W);
     connect(mSelectTime,SIGNAL(triggered()), this,SLOT(slotSelectTime()));
 
@@ -374,19 +377,19 @@ void KlustersApp::createMenus()
 
     QActionGroup *grp = new QActionGroup(this);
     grp->addAction(scaleByMax);
-    scaleByMax->setShortcut(Qt::SHIFT + Qt::Key_M);
+    scaleByMax->setShortcut(Qt::SHIFT | Qt::Key_M);
     scaleByMax->setCheckable(true);
     connect(scaleByMax,SIGNAL(triggered()), this,SLOT(slotScaleByMax()));
 
     scaleByShouler = correlationsMenu->addAction(tr("Scale by &Asymptote"));
     grp->addAction(scaleByShouler);
-    scaleByShouler->setShortcut(Qt::SHIFT + Qt::Key_A);
+    scaleByShouler->setShortcut(Qt::SHIFT | Qt::Key_A);
     scaleByShouler->setCheckable(true);
     connect(scaleByShouler,SIGNAL(triggered()), this,SLOT(slotScaleByShouler()));
 
     noScale = correlationsMenu->addAction(tr("&Uniform Scale"));
     grp->addAction(noScale);
-    noScale->setShortcut(Qt::SHIFT + Qt::Key_U);
+    noScale->setShortcut(Qt::SHIFT | Qt::Key_U);
     noScale->setCheckable(true);
     connect(noScale,SIGNAL(triggered()), this,SLOT(slotNoScale()));
 
@@ -402,11 +405,11 @@ void KlustersApp::createMenus()
     //Initialize the presentation mode to scale by maximum.
     scaleByMax->setChecked(true);
     mIncreaseAmplitudeCorrelation = correlationsMenu->addAction(tr("&Increase Amplitude"));
-    mIncreaseAmplitudeCorrelation->setShortcut(Qt::SHIFT + Qt::Key_I);
+    mIncreaseAmplitudeCorrelation->setShortcut(Qt::SHIFT | Qt::Key_I);
     connect(mIncreaseAmplitudeCorrelation,SIGNAL(triggered()), this,SLOT(slotIncreaseCorrelogramsAmplitude()));
 
     mDecreaseAmplitudeCorrelation = correlationsMenu->addAction(tr("&Decrease Amplitude"));
-    mDecreaseAmplitudeCorrelation->setShortcut(Qt::SHIFT +  Qt::Key_D);
+    mDecreaseAmplitudeCorrelation->setShortcut(Qt::SHIFT | Qt::Key_D);
     connect(mDecreaseAmplitudeCorrelation,SIGNAL(triggered()), this,SLOT(slotDecreaseCorrelogramsAmplitude()));
 
 
@@ -414,31 +417,31 @@ void KlustersApp::createMenus()
     //Traces menu
     QMenu *traceMenu = menuBar()->addMenu(tr("T&races"));
     mIncreaseChannelAmplitudes = traceMenu->addAction(tr("&Increase Channel Amplitudes"));
-    mIncreaseChannelAmplitudes->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_I);
+    mIncreaseChannelAmplitudes->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_I);
     connect(mIncreaseChannelAmplitudes,SIGNAL(triggered()), this,SLOT(slotIncreaseAllChannelsAmplitude()));
 
     mDecreaseChannelAmplitudes = traceMenu->addAction(tr("&Decrease Channel Amplitudes"));
-    mDecreaseChannelAmplitudes->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_D);
+    mDecreaseChannelAmplitudes->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_D);
     connect(mDecreaseChannelAmplitudes,SIGNAL(triggered()), this,SLOT(slotDecreaseAllChannelsAmplitude()));
 
 
     traceMenu->addSeparator();
 
     mNextSpike = traceMenu->addAction(tr("&Next Spike"));
-    mNextSpike->setIcon(QIcon(":/icons/forwardCluster"));
-    mNextSpike->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_F);
+    mNextSpike->setIcon(QIcon::fromTheme("go-next", QIcon(":/icons/forwardCluster")));
+    mNextSpike->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_F);
     connect(mNextSpike,SIGNAL(triggered()), this,SLOT(slotShowNextCluster()));
 
     mPreviousSpike = traceMenu->addAction(tr("&Previous Spike"));
-    mPreviousSpike->setIcon(QIcon(":/icons/backCluster"));
-    mPreviousSpike->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_B);
+    mPreviousSpike->setIcon(QIcon::fromTheme("go-previous", QIcon(":/icons/backCluster")));
+    mPreviousSpike->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_B);
     connect(mPreviousSpike,SIGNAL(triggered()), this,SLOT(slotShowPreviousCluster()));
 
 
     traceMenu->addSeparator();
 
     showHideLabels = traceMenu->addAction(tr("Show &Labels"));
-    showHideLabels->setShortcut(Qt::CTRL + Qt::Key_L);
+    showHideLabels->setShortcut(Qt::CTRL | Qt::Key_L);
     showHideLabels->setCheckable(true);
     connect(showHideLabels,SIGNAL(triggered()), this,SLOT(slotShowLabels()));
 
@@ -473,13 +476,13 @@ void KlustersApp::createMenus()
     displayMenu->addSeparator();
 
     mRenameActiveDisplay = displayMenu->addAction(tr("&Rename Active Display"));
-    mRenameActiveDisplay->setShortcut(Qt::CTRL + Qt::Key_R);
+    mRenameActiveDisplay->setShortcut(Qt::CTRL | Qt::Key_R);
     connect(mRenameActiveDisplay,SIGNAL(triggered()), this,SLOT(renameActiveDisplay()));
 
     displayMenu->addSeparator();
 
     mCloseActiveDisplay = displayMenu->addAction(tr("&Close Active Display"));
-    mCloseActiveDisplay->setShortcut(Qt::CTRL + Qt::Key_W);
+    mCloseActiveDisplay->setShortcut(Qt::CTRL | Qt::Key_W);
     connect(mCloseActiveDisplay,SIGNAL(triggered()), this,SLOT(slotDisplayClose()));
 
 
@@ -537,7 +540,7 @@ void KlustersApp::createMenus()
 
     settingsMenu->addSeparator();
     mPreferenceAction = settingsMenu->addAction(tr("Preferences"));
-    mPreferenceAction->setIcon(QIcon(":/shared-icons/configure"));
+    mPreferenceAction->setIcon(QIcon::fromTheme("configure", QIcon(":/shared-icons/configure")));
     connect(mPreferenceAction,SIGNAL(triggered()), this,SLOT(executePreferencesDlg()));
 
 
@@ -963,7 +966,7 @@ void KlustersApp::initDisplay(){
 void KlustersApp::createDisplay(KlustersView::DisplayType type)
 {
     if(mainDock){
-        QString displayName = (doc->documentName()).append(type);
+        QString displayName = (doc->documentName()).append(QString::number(static_cast<int>(type)));
         QString displayType = KlustersView::DisplayTypeNames[type];
 
         //Check if the active display contains a ProcessWidget
@@ -1207,7 +1210,7 @@ void KlustersApp::openDocumentFile(const QString& url)
     else{
         QString docName = doc->documentName();
         QFileInfo urlFileInfo(url);
-        QStringList fileParts = urlFileInfo.fileName().split(".", QString::SkipEmptyParts);
+        QStringList fileParts = urlFileInfo.fileName().split(".", Qt::SkipEmptyParts);
         QString electrodNb;
         if(fileParts.count() < 3)
             electrodNb.clear();
@@ -1623,7 +1626,7 @@ void KlustersApp::slotFilePrint()
 {
     slotStatusMsg(tr("Printing..."));
     QPrinter printer;
-    printer.setOrientation(QPrinter::Landscape);
+    printer.setPageOrientation(QPageLayout::Landscape);
     printer.setColorMode(QPrinter::Color);
 
     QPrintDialog dialog(&printer, this);
@@ -2457,7 +2460,7 @@ void KlustersApp::slotRecluster(){
     QList<int>::const_iterator shownClustersIterator;
     for(shownClustersIterator = currentClusters.begin(); shownClustersIterator != currentClusters.end(); ++shownClustersIterator)
         clustersToRecluster.append(*shownClustersIterator);
-    qSort(clustersToRecluster);
+    std::sort(clustersToRecluster.begin(), clustersToRecluster.end());
 
     //Build the command line to launch the reclustering
 

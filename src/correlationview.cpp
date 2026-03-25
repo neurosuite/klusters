@@ -36,6 +36,7 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <QDebug>
+#include <algorithm>
 
 const int CorrelationView::XMARGIN = 10;
 const int CorrelationView::YMARGIN = 0;
@@ -94,7 +95,7 @@ CorrelationView::CorrelationView(KlustersDoc& doc,KlustersView& view,const QColo
     QList<int>::const_iterator clustersIterator;
     for(clustersIterator = shownClusters.begin(); clustersIterator != shownClusters.end(); ++clustersIterator)
         clusters.append(*clustersIterator);
-    qSort(clusters);
+    std::sort(clusters.begin(), clusters.end());
 
     for(int j = 0; j<clusters.size(); ++j) {
         for(int h = j; h<clusters.size(); ++h) {
@@ -299,7 +300,7 @@ void CorrelationView::paintEvent ( QPaintEvent *){
         }
 
         //reset transformation due to setWindow and setViewport
-        painter.resetMatrix() ;
+        painter.resetTransform() ;
 
         //Draw the cluster Ids along the correlograms.
         drawClusterIds(painter);
@@ -334,7 +335,7 @@ void CorrelationView::askForCorrelograms(){
         QList<int>::const_iterator clustersIterator;
         for(clustersIterator = shownClusters.begin(); clustersIterator != shownClusters.end(); ++clustersIterator)
             clusters.append(*clustersIterator);
-        qSort(clusters);
+        std::sort(clusters.begin(), clusters.end());
 
 
         pairs.clear();
@@ -442,7 +443,7 @@ void CorrelationView::drawCorrelograms(QPainter& painter,QList<Pair>& pairList){
         QList<int>::const_iterator end(clusters.end());
         for(iterator = clusters.begin(); iterator != end; ++iterator)
             shownClusters.append(*iterator);
-        qSort(shownClusters);
+        std::sort(shownClusters.begin(), shownClusters.end());
     }
 
     for(pairIterator = pairList.begin(); pairIterator != pairList.end(); ++pairIterator){
@@ -483,7 +484,7 @@ void CorrelationView::drawCorrelograms(QPainter& painter,QList<Pair>& pairList){
             firingRate = floor((firingRate * 100) + 0.5) / 100;
 
             QString firingRateString = QString::fromLatin1("%1").arg(firingRate);
-            QStringList parts = firingRateString.split(".", QString::SkipEmptyParts);
+            QStringList parts = firingRateString.split(".", Qt::SkipEmptyParts);
 
             if(parts.count() == 1) {
                 firingRateString += ".00";
@@ -604,7 +605,7 @@ void CorrelationView::drawClusterIds(QPainter& painter){
     QList<int> const clusters = view.clusters();
     for(iterator = clusters.begin(); iterator != clusters.end(); ++iterator)
         shownClusters.append(*iterator);
-    qSort(shownClusters);
+    std::sort(shownClusters.begin(), shownClusters.end());
 
     QFont f("Helvetica",8);
     painter.setFont(f);
@@ -826,7 +827,7 @@ void CorrelationView::mouseMoveEvent(QMouseEvent* event){
                 QList<int> const clusters = view.clusters();
                 for(iterator = clusters.begin(); iterator != clusters.end(); ++iterator)
                     shownClusters.append(*iterator);
-                qSort(shownClusters);
+                std::sort(shownClusters.begin(), shownClusters.end());
                 xCluster = qMin(qMax(0,xCluster),shownClusters.count()-1);
                 yCluster = qMin(qMax(0,yCluster),shownClusters.count()-1);
 
@@ -892,7 +893,7 @@ void CorrelationView::print(QPainter& printPainter,int width,int height, bool wh
     drawCorrelograms(printPainter,pairs);
 
     //reset transformation due to setWindow and setViewport
-    printPainter.resetMatrix();
+    printPainter.resetTransform();
 
     //Draw the cluster Ids along the correlograms.
     drawClusterIds(printPainter);

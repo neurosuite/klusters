@@ -169,7 +169,7 @@ void ClusterView::paintEvent ( QPaintEvent*){
         }
 
         //reset transformation due to setWindow
-        painter.resetMatrix() ;
+        painter.resetTransform() ;
 
 
         //Draw the time axis information if the time is displayed
@@ -338,7 +338,7 @@ void ClusterView::mousePressEvent(QMouseEvent* e){
         }
 
         //Close the polygon of selection and trigger the right action depending on the mode
-        if(e->button() == Qt::MidButton && !selectionPolygon.isEmpty()){
+        if(e->button() == Qt::MiddleButton && !selectionPolygon.isEmpty()){
             //If, once the last moving line erase, the polygon exists and has at least 3 points, draw it
             if(selectionPolygon.size()>2){
                 //erase the last line drawn if the user moved since the last click
@@ -567,7 +567,7 @@ void ClusterView::print(QPainter& printPainter,int width,int height, bool whiteB
     drawClusters(printPainter,view.clusters(),true);
 
     //reset transformation due to setWindow and setViewport
-    printPainter.resetMatrix();
+    printPainter.resetTransform();
 
     //Draw the time axis information if the time is displayed
     drawTimeInformation(printPainter);

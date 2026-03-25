@@ -20,6 +20,7 @@
 #include <qfileinfo.h>
 
 #include <QList>
+#include <algorithm>
 
 //include files for the application
 #include "clustersprovider.h"
@@ -198,7 +199,7 @@ void ClustersProvider::requestNextClusterData(long startTime,long timeFrame,QLis
         return;
     }
 
-    qSort(firstSpikes);
+    std::sort(firstSpikes.begin(), firstSpikes.end());
     time = firstSpikes.first();
 
     //the found spike will be placed at clusterPosition*100 % of the timeFrame
@@ -237,7 +238,7 @@ void ClustersProvider::requestNextClusterData(long startTime,long timeFrame,QLis
             return;
         }
 
-        qSort(firstSpikes);
+        std::sort(firstSpikes.begin(), firstSpikes.end());
         time = firstSpikes[0];
 
         startingInRecordingUnits = qMax(time - static_cast<long>(position),0L);
@@ -356,7 +357,7 @@ void ClustersProvider::requestPreviousClusterData(long startTime,long timeFrame,
         return;
     }
 
-    qSort(firstSpikes);
+    std::sort(firstSpikes.begin(), firstSpikes.end());
     time = firstSpikes.at(firstSpikes.size() - 1);
 
     //the found spike will be placed at clusterPosition*100 % of the timeFrame

@@ -39,7 +39,7 @@ ProcessListBoxItem::ProcessListBoxItem(const QString &s, Type type)
 
 QVariant ProcessListBoxItem::data ( int role ) const
 {
-    if(role == Qt::TextColorRole ){
+    if(role == Qt::ForegroundRole ){
         return ((t==Error)? QColor(Qt::darkRed) : (t==Diagnostic)? QColor(Qt::black) : QColor(Qt::darkBlue));
     }
     return QListWidgetItem::data(role);
@@ -234,7 +234,7 @@ void ProcessWidget::print(QPrinter *printer, const QString &filePath){
     }
 
     //Print the name of the file
-    printPainter.resetMatrix();
+    printPainter.resetTransform();
     printPainter.setPen(Qt::black);
     printPainter.drawText(textRec,Qt::AlignLeft | Qt::AlignVCenter,tr("File: %1").arg(filePath));
 

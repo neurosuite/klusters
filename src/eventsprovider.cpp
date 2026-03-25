@@ -17,7 +17,7 @@
 //QT include files
 #include <qstringlist.h>
 #include <qfileinfo.h>
-#include <qregexp.h>
+#include <QRegularExpression>
 
 #include <QTextStream>
 #include <QList>
@@ -27,6 +27,7 @@
 #include <iomanip> // Required for formated I/O.
 
 #include <QTemporaryFile>
+#include <algorithm>
 
 //Unix include file
 #include <unistd.h>
@@ -94,8 +95,8 @@ int EventsProvider::loadData(){
     for(line = fileStream.readLine(); !line.isNull() && lineCounter< nbEvents;line = fileStream.readLine()){
         line = line.trimmed();
 
-        int index1 = line.indexOf(QRegExp("\\s"));
-        int index2 = line.indexOf(QRegExp("\\S"),index1);
+        int index1 = line.indexOf(QRegularExpression("\\s"));
+        int index2 = line.indexOf(QRegularExpression("\\S"),index1);
 
         timeStamps[lineCounter] = line.left(index1).toDouble();
         EventDescription label = line.right(line.length() - index2);
@@ -108,7 +109,7 @@ int EventsProvider::loadData(){
     }
 
     eventFile.close();
-    qDebug() << "Loading evt file into memory: "<<Timer() << endl;
+    qDebug() << "Loading evt file into memory: "<<Timer();
 
 
     //The number of events read has to be coherent with the number of events read.
@@ -1204,7 +1205,7 @@ void EventsProvider::addEventDescription(const QString &eventDescriptionToAdd){
 
     descriptions.append(EventDescription(eventDescriptionToAdd));
 
-    qSort(descriptions);
+    std::sort(descriptions.begin(), descriptions.end());
     long maxSize = 0;
     long sum = 0;
     long sumOfSquares = 0;
@@ -1259,7 +1260,7 @@ void EventsProvider::removeEventDescription(const QString &eventDescriptionToRem
     QList<EventDescription> newDescriptions = eventIds.keys();
     newDescriptions.removeAll(EventDescription(eventDescriptionToRemove));
 
-    qSort(newDescriptions);
+    std::sort(newDescriptions.begin(), newDescriptions.end());
     long maxSize = 0;
     long sum = 0;
     long sumOfSquares = 0;

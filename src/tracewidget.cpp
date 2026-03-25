@@ -48,7 +48,7 @@ TraceWidget::TraceWidget(long startTime,long duration,bool greyScale,TracesProvi
     recordingLength = tracesProvider.recordingLength();
 
     selectionWidgets = new QWidget(this);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
 
     layout->addWidget(&view);
@@ -170,7 +170,7 @@ void TraceWidget::initSelectionWidgets(){
     scrollBar->setFocusPolicy(Qt::StrongFocus);
     connect(scrollBar,SIGNAL(valueChanged(int)),this, SLOT(slotScrollBarUpdated()));
 
-    lay->setMargin(0);
+    lay->setContentsMargins(0, 0, 0, 0);
     lay->setSpacing(0);
     lay->setStretchFactor(startLabel,0);
     lay->setStretchFactor(startMinute,0);

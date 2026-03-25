@@ -39,6 +39,7 @@
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QEvent>
+#include <algorithm>
 
 
 const int WaveformView::XMARGIN = 0;
@@ -418,7 +419,7 @@ void WaveformView::paintEvent ( QPaintEvent *){
         }
 
         //reset transformation due to setWindow and setViewport
-        painter.resetMatrix() ;
+        painter.resetTransform() ;
 
         //Draw the cluster Ids below the waveforms if they are not in overlay presentation.
         if(!overLayPresentation)
@@ -446,13 +447,13 @@ void WaveformView::drawWaveforms(QPainter& painter,const QList<int>& clusterList
     for(iterator = clusters.begin(); iterator != clusters.end(); ++iterator)
         shownClusters.append(*iterator);
 
-    qSort(shownClusters);
+    std::sort(shownClusters.begin(), shownClusters.end());
 
     QList<int> clusterListSorted;
     for(iterator = clusterList.begin(); iterator != clusterList.end(); ++iterator)
         clusterListSorted.append(*iterator);
 
-    qSort(clusterListSorted);
+    std::sort(clusterListSorted.begin(), clusterListSorted.end());
 
     //Loop on the clusters to be drawn
     QList<int>::const_iterator clusterIterator;
@@ -674,7 +675,7 @@ void WaveformView::drawClusterIds(QPainter& painter){
     QList<int> const clusters = view.clusters();
     for(iterator = clusters.begin(); iterator != clusters.end(); ++iterator)
         shownClusters.append(*iterator);
-    qSort(shownClusters);
+    std::sort(shownClusters.begin(), shownClusters.end());
 
     QFont f("Helvetica",8);
     painter.setFont(f);
@@ -838,7 +839,7 @@ void WaveformView::print(QPainter& printPainter,int width,int height, bool white
     drawWaveforms(printPainter,view.clusters());
 
     //reset transformation due to setWindow and setViewport
-    printPainter.resetMatrix();
+    printPainter.resetTransform();
 
     //Draw the cluster Ids below the waveforms if they are not in overlay presentation.
     if(!overLayPresentation) drawClusterIds(printPainter);

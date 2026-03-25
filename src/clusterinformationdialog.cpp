@@ -34,7 +34,7 @@ ClusterInformationDialog::ClusterInformationDialog(QWidget *parent,const QString
     QWidget *page = new QWidget(this);
 
     QVBoxLayout*  layout = new QVBoxLayout(page);
-    layout->setMargin(2);
+    layout->setContentsMargins(2, 2, 2, 2);
     setLayout(layout);
     //Structure information (label and lineedit)
     QLabel *label1 = new QLabel(tr("Structure"),page);
