@@ -45,7 +45,7 @@ void Configuration::read() {
     crashRecovery = settings.value("crashRecovery",crashRecoveryDefault).toBool();
     crashRecoveryIndex = settings.value("crashRecoveryIndex",crashRecoveryIndexDefault).toInt();
     nbUndo = settings.value("nbUndo",nbUndoDefault).toInt();
-    backgroundColor = settings.value("backgroundColor",&backgroundColorDefault).value<QColor>();
+    backgroundColor = settings.value("backgroundColor",backgroundColorDefault).value<QColor>();
     reclusteringExecutable = settings.value("reclusteringExecutable",reclusteringExecutableDefault).toString();
     reclusteringArgs = settings.value("reclusteringArgs",reclusteringArgsDefault).toString();
     useWhiteColorDuringPrinting = settings.value("useWhiteColorDuringPrinting",true).toBool();
