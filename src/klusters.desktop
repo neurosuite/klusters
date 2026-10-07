@@ -1,9 +1,11 @@
 [Desktop Entry]
 Type=Application
 Name=Klusters
-GenericName=Cluster cutting application
-Comment=
+GenericName=Spike Sorting
+Comment=Sort action potentials into clusters manually
 Icon=klusters
-Exec=klusters %u
+Exec=klusters %f
+TryExec=klusters
 MimeType=application/nphys-clu;application/nphys-fet;
-Categories=Qt;Education;Science;
+Categories=Qt;Science;Biology;
+Keywords=electrophysiology;spike sorting;cluster cutting;neuroscience;

@@ -35,6 +35,7 @@ int main(int argc, char* argv[])
     QApplication::setOrganizationName("sourceforge");
     QApplication::setOrganizationDomain("sourceforge.net");
     QApplication::setApplicationName("klusters");
+    QGuiApplication::setDesktopFileName("io.github.neurosuite.Klusters");
 
     QApplication app(argc, argv); 
 

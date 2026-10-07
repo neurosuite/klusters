@@ -28,6 +28,7 @@
 
 
 // include files for QT
+#include <QApplication>
 #include <QDir>
 #include <QActionGroup>
 #include <QPageLayout>
@@ -3185,7 +3186,7 @@ void KlustersApp::slotAbout()
 void KlustersApp::slotHanbook()
 {
     QHelpViewer *helpDialog = new QHelpViewer(this);
-    helpDialog->setHtml(KLUSTER_DOC_PATH + QLatin1String("index.html"));
+    helpDialog->setHtml(QApplication::applicationDirPath() + KLUSTERS_DOC_PATH + QLatin1String("index.html"));
     helpDialog->setAttribute( Qt::WA_DeleteOnClose );
     helpDialog->show();
 }

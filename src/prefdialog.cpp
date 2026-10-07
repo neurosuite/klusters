@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 // include files for QT
+#include <QApplication>
 #include <qlayout.h>        // for QVBoxLayout
 #include <qlabel.h>         // for QLabel
 
@@ -103,7 +104,7 @@ PrefDialog::PrefDialog(QWidget *parent,int nbChannels)
 void PrefDialog::slotHelp()
 {
     QHelpViewer *helpDialog = new QHelpViewer(this);
-    helpDialog->setHtml(KLUSTER_DOC_PATH + QLatin1String("index.html"));
+    helpDialog->setHtml(QApplication::applicationDirPath() + KLUSTERS_DOC_PATH + QLatin1String("index.html"));
     helpDialog->setAttribute( Qt::WA_DeleteOnClose );
     helpDialog->show();
 }
