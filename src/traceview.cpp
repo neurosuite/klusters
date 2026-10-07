@@ -39,7 +39,6 @@
 //
 
 //Unix include file
-#include <unistd.h>
 
 #include <iomanip> // Required for formated I/O.
 

@@ -15,82 +15,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#if defined(Q_OS_WIN)
-#include <time.h>
-#include <windows.h>
-#include <winsock.h>
-#else
-#include <sys/time.h>
-#endif
+// Elapsed-time helpers used for debug timing output. std::chrono replaces
+// gettimeofday(), which does not exist on Windows.
+#include <chrono>
 
-#include <sys/time.h>
-
-static struct timeval tv0;
-inline void RestartTimer()
-{
-  struct timezone tz;
-  gettimeofday(&tv0,&tz);
-}
-
-inline float Timer()
-{
-  struct timeval tv;
-  struct timezone tz;
-  gettimeofday(&tv,&tz);
-  float msec = static_cast<int>(tv.tv_usec/1000)/1000.0;
-  float msec0 = static_cast<int>(tv0.tv_usec/1000)/1000.0;
-  float time = (tv.tv_sec+msec)-(tv0.tv_sec+msec0);
-  return time;
-}
-
-
-#if 0
-#if defined(Q_OS_WIN) && USE_MSVC_COMPILER
-    #include <time.h>
-    #include <sys/timeb.h>
-    int gettimeofday (struct timeval *tp, void *tz)
-    {
-    struct _timeb timebuffer;
-    _ftime (&timebuffer);
-    tp->tv_sec = timebuffer.time;
-    tp->tv_usec = timebuffer.millitm * 1000;
-    return 0;
-    }
+static std::chrono::steady_clock::time_point tv0;
 
 inline void RestartTimer()
 {
-  struct timeval tz;
-  gettimeofday(&tv0,&tz);
+    tv0 = std::chrono::steady_clock::now();
 }
 
+// Seconds elapsed since the last RestartTimer() call.
 inline float Timer()
 {
-  struct timeval tv;
-  struct timeval tz;
-  gettimeofday(&tv,&tz);
-  float msec = static_cast<int>(tv.tv_usec/1000)/1000.0;
-  float msec0 = static_cast<int>(tv0.tv_usec/1000)/1000.0;
-  float time = (tv.tv_sec+msec)-(tv0.tv_sec+msec0);
-  return time;
+    return std::chrono::duration<float>(std::chrono::steady_clock::now() - tv0).count();
 }
-#else
-inline void RestartTimer()
-{
-  struct timezone tz;
-  gettimeofday(&tv0,&tz);
-}
-
-inline float Timer()
-{
-  struct timeval tv;
-  struct timezone tz;
-  gettimeofday(&tv,&tz);
-  float msec = static_cast<int>(tv.tv_usec/1000)/1000.0;
-  float msec0 = static_cast<int>(tv0.tv_usec/1000)/1000.0;
-  float time = (tv.tv_sec+msec)-(tv0.tv_sec+msec0);
-  return time;
-}
-
-#endif
-#endif
 

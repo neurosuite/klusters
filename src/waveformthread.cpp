@@ -26,7 +26,6 @@
 #include <QDebug>
 
 //Unix include file
-#include <unistd.h>
 
 void WaveformThread::getWaveformInformation(int clusterId,WaveformView::PresentationMode mode){
     this->clusterId = clusterId;
