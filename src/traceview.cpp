@@ -2075,8 +2075,8 @@ void TraceView::mouseMoveEvent(QMouseEvent* event){
     //If the view was zoomed and the left margin (where the ids and gains of the channels of the first group are displayed) is not
     //shown (r.left() != 0), the coordinates have to be adjusted. Indeed, this margin is outside the world but in the viewport and included in the
     //values return par the event.
-    if(r.left() != 0) current = viewportToWorld(event->x(),event->y());
-    else current = viewportToWorld(event->x() - xMargin,event->y());
+    if(r.left() != 0) current = viewportToWorld(event->position().toPoint().x(),event->position().toPoint().y());
+    else current = viewportToWorld(event->position().toPoint().x() - xMargin,event->position().toPoint().y());
 
     int x = (current.x() - static_cast<int>(borderX));
 
@@ -2359,8 +2359,8 @@ void TraceView::mousePressEvent(QMouseEvent* event){
             //If the view was zoomed and the left margin (where the ids and gains of the channels of the first group are displayed) is not
             //shown (r.left() != 0), the coordinates have to be adjusted. Indeed, this margin is outside the world but in the viewport and included in the
             //values return par the event.
-            if(r.left() != 0) current = viewportToWorld(event->x(),event->y());
-            else current = viewportToWorld(event->x() - xMargin,event->y());
+            if(r.left() != 0) current = viewportToWorld(event->position().toPoint().x(),event->position().toPoint().y());
+            else current = viewportToWorld(event->position().toPoint().x() - xMargin,event->position().toPoint().y());
             lastClickOrdinate = current.y();
 
             if(multiColumns){
@@ -2901,8 +2901,8 @@ void TraceView::mouseReleaseEvent(QMouseEvent* event){
         BaseFrame::mouseReleaseEvent(event);
         QPoint current;
         QRect r((QRect)window);
-        if(r.left() != 0) current = viewportToWorld(event->x(),event->y());
-        else current = viewportToWorld(event->x() - xMargin,event->y());
+        if(r.left() != 0) current = viewportToWorld(event->position().toPoint().x(),event->position().toPoint().y());
+        else current = viewportToWorld(event->position().toPoint().x() - xMargin,event->position().toPoint().y());
         int x = (current.x() - static_cast<int>(borderX));
 
         //Compute the starting and ending time

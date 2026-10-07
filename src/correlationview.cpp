@@ -797,9 +797,9 @@ void CorrelationView::mouseMoveEvent(QMouseEvent* event){
     QRect r((QRect)window);
     QPoint current;
     if(r.left() != 0)
-        current = viewportToWorld(event->x(),event->y());
+        current = viewportToWorld(event->position().toPoint().x(),event->position().toPoint().y());
     else
-        current = viewportToWorld(event->x() - XMARGIN,event->y());
+        current = viewportToWorld(event->position().toPoint().x() - XMARGIN,event->position().toPoint().y());
 
     //Compute the time
     int x = (current.x() - static_cast<int>(widthBorder));

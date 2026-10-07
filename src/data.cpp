@@ -253,7 +253,7 @@ bool Data::loadClusters(QFile &clusterFile, long spkFileLength, QString& errorIn
             firstLine = false;
         } else {
             QByteArray feature;
-            for (int i = 0; i <line.count();++i) {
+            for (int i = 0; i <line.size();++i) {
                 if ( (line.at(i) >= '0' && line.at(i) <='9')) {
                     feature.append(line.at(i));
                 } else if( !feature.isEmpty()){
@@ -288,7 +288,7 @@ bool Data::loadFeatures(QFile& featureFile,QString& errorInformation){
         if (firstLine) {
             firstLine = false;
             int j = 0;
-            for (int i = 0; i <line.count();++i) {
+            for (int i = 0; i <line.size();++i) {
                 if (line.at(i) >= '0' && line.at(i) <='9') {
                     j++;
                 } else if(j) {
@@ -299,7 +299,7 @@ bool Data::loadFeatures(QFile& featureFile,QString& errorInformation){
             features.setSize(nbSpikes,nbDimensions);
         } else {
             QByteArray feature;
-            for (int i = 0; i <line.count();++i) {
+            for (int i = 0; i <line.size();++i) {
                 if (line.at(i) == '-' || (line.at(i) >= '0' && line.at(i) <='9')) {
                     feature.append(line.at(i));
                 } else if (!feature.isEmpty()){
@@ -3631,7 +3631,7 @@ bool Data::loadReclusteredClusters(QFile &clusterFile){
             firstLine = false;
         } else {
             QByteArray feature;
-            for (int i = 0; i <line.count();++i) {
+            for (int i = 0; i <line.size();++i) {
                 if ((line.at(i) >= '0' && line.at(i) <='9')) {
                     feature.append(line.at(i));
                 } else if (!feature.isEmpty()){

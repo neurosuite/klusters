@@ -314,7 +314,7 @@ void ErrorMatrixView::initializeColorMap(){
 
 void ErrorMatrixView::mouseMoveEvent(QMouseEvent* e){
     //Write the current probability in the statusbar.
-    QPoint current = viewportToWorld(e->x() - 15,e->y());
+    QPoint current = viewportToWorld(e->position().toPoint().x() - 15,e->position().toPoint().y());
 
     int x = abscissaMin + widthBorder;
     int y = ordinateMin + heightBorder;
@@ -335,7 +335,7 @@ void ErrorMatrixView::mouseReleaseEvent(QMouseEvent* e){
     if(clusterList.isEmpty())
         return;
     //Select the clusters corresponding to the current cell of the matrix (if they still exist)
-    QPoint current = viewportToWorld(e->x() -15,e->y());
+    QPoint current = viewportToWorld(e->position().toPoint().x() -15,e->position().toPoint().y());
 
     int x = abscissaMin + widthBorder;
     int y = ordinateMin + heightBorder;

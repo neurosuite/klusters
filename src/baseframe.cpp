@@ -145,19 +145,19 @@ void BaseFrame::mouseReleaseEvent(QMouseEvent* e){
             }
 
             if(r.left() != 0)
-                secondClick = QPoint(e->x(),e->y() - Yborder);
+                secondClick = QPoint(e->position().toPoint().x(),e->position().toPoint().y() - Yborder);
             else
-                secondClick = QPoint(e->x() - Xborder,e->y() - Yborder);
+                secondClick = QPoint(e->position().toPoint().x() - Xborder,e->position().toPoint().y() - Yborder);
 
             //If the distance between the first and second selected points are > 5:
             //the user wanted to draw a rectangle otherwise he intended to select a single point
             if((abs(secondClick.x() - firstClickOffset.x()) > 5) || (abs(secondClick.y() - firstClickOffset.y()) > 5)){
 
                 if(r.left() != 0) {
-                    secondClick = viewportToWorld(e->x(),e->y() - Yborder);
+                    secondClick = viewportToWorld(e->position().toPoint().x(),e->position().toPoint().y() - Yborder);
                     firstClick = viewportToWorld(firstClick.x(),firstClick.y() - Yborder);
                 } else {
-                    secondClick = viewportToWorld(e->x() - Xborder,e->y() - Yborder);
+                    secondClick = viewportToWorld(e->position().toPoint().x() - Xborder,e->position().toPoint().y() - Yborder);
                     firstClick = viewportToWorld(firstClick.x() - Xborder,firstClick.y() - Yborder);
                 }
 
@@ -180,9 +180,9 @@ void BaseFrame::mouseReleaseEvent(QMouseEvent* e){
                     factor = static_cast<float>(2);
 
                 if(r.left() != 0) {
-                    secondClick = viewportToWorld(e->x(),e->y() - Yborder);
+                    secondClick = viewportToWorld(e->position().toPoint().x(),e->position().toPoint().y() - Yborder);
                 } else {
-                    secondClick = viewportToWorld(e->x() - Xborder,e->y() - Yborder);
+                    secondClick = viewportToWorld(e->position().toPoint().x() - Xborder,e->position().toPoint().y() - Yborder);
                 }
 
                 //modify the window rectangle

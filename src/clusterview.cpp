@@ -309,7 +309,7 @@ void ClusterView::setMode(BaseFrame::Mode selectedMode){
 void ClusterView::mousePressEvent(QMouseEvent* e){
     //Defining a time window t oupdate the Traceview
     if(mode == SELECT_TIME){
-        QPoint current = viewportToWorld(e->x(),e->y());
+        QPoint current = viewportToWorld(e->position().toPoint().x(),e->position().toPoint().y());
         if(dimensionX == timeDimension){
             dataType time = static_cast<dataType>(current.x() * samplingInterval / 1000.0);
             emit moveToTime(time);
@@ -358,7 +358,7 @@ void ClusterView::mousePressEvent(QMouseEvent* e){
         }
 
         if (e->button() == Qt::LeftButton){
-            QPoint selectedPoint = viewportToWorld(e->x(),e->y());
+            QPoint selectedPoint = viewportToWorld(e->position().toPoint().x(),e->position().toPoint().y());
 
             if(nbSelectionPoints == 0)
                 selectionPolygon.putPoints(0, 1, selectedPoint.x(),selectedPoint.y());
@@ -378,7 +378,7 @@ void ClusterView::mouseReleaseEvent(QMouseEvent* event){
 
 void ClusterView::mouseMoveEvent(QMouseEvent* e){
     //Write the current coordinates in the statusbar.
-    QPoint current = viewportToWorld(e->x(),e->y());
+    QPoint current = viewportToWorld(e->position().toPoint().x(),e->position().toPoint().y());
 
     if(dimensionX == timeDimension){
         int timeInS = static_cast<int>(current.x() * samplingInterval / 1000000.0);
