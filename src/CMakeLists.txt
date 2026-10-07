@@ -57,7 +57,13 @@ endif()
 
 target_link_libraries(klusters PRIVATE neurosuite::neurosuite Qt6::Widgets Qt6::PrintSupport Qt6::Xml)
 
-# Bundle the Qt runtime on Windows and macOS at install time.
+if(APPBUNDLE)
+    install(TARGETS klusters BUNDLE DESTINATION ".")
+else()
+    install(TARGETS klusters RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+endif()
+
+# Bundle the Qt runtime on Windows and macOS at install time (after the target is installed).
 if(WIN32 OR APPBUNDLE)
     qt_generate_deploy_app_script(
         TARGET klusters
@@ -65,12 +71,6 @@ if(WIN32 OR APPBUNDLE)
         NO_UNSUPPORTED_PLATFORM_ERROR
     )
     install(SCRIPT ${KLUSTERS_DEPLOY_SCRIPT})
-endif()
-
-if(APPBUNDLE)
-    install(TARGETS klusters BUNDLE DESTINATION ".")
-else()
-    install(TARGETS klusters RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
 if(UNIX AND NOT APPLE)
