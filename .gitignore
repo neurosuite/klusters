@@ -2,3 +2,6 @@
 *.o
 *.moc
 Makefile
+result
+result-*
+flake.lock

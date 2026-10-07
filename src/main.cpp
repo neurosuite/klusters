@@ -17,6 +17,7 @@
 
 
 // include files for QT
+#include <cstdio>
 #include <QDir>
 #include <QString>
 #include <QApplication>
@@ -48,8 +49,13 @@ int main(int argc, char* argv[])
                        << " [file]"
                        << "\n\n"
                        << "Arguments:\n"
-                       << "  -h, --help              print this help\n";
+                       << "  -h, --help              print this help\n"
+                       << "  -v, --version           print version info\n";
             return 1;
+        }
+        if (arg == "-v" || arg == "--version") {
+            printf("Klusters %s\n", KLUSTERS_VERSION);
+            return 0;
         }
         qDebug()<<" QString::fromLocal8Bit(argv[i]) :"<<QString::fromLocal8Bit(argv[i]);
         argsList.push_back(QString::fromLocal8Bit(argv[i]));
