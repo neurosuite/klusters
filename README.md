@@ -13,6 +13,18 @@ If you use Klusters, please cite: L. Hazan, M. Zugaro, G. Buzsáki (2006). Klust
 NeuroScope, NDManager: a free software suite for neurophysiological data processing and
 visualization. *J Neurosci Methods* 155:207-216.
 
+## Installing
+
+Download a package for Linux (.deb, AppImage), macOS (.dmg) or Windows (installer or .zip)
+from the [releases page](https://github.com/neurosuite/klusters/releases).
+
+On Ubuntu 24.04 or newer, install the .deb together with the `libneurosuite3` package from
+the same release:
+
+```bash
+sudo apt install ./libneurosuite3_*.deb ./klusters_*.deb
+```
+
 ## Building
 
 Requires CMake 3.16+, a C++17 compiler, Qt 6.4+ (Widgets, PrintSupport, Xml) and
