@@ -38,7 +38,6 @@
 #include <stdexcept>
 #include <math.h>
 #include <vector>
-using namespace std;
 
 // forward declaration
 class MinMaxThread;

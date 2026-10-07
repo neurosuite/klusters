@@ -32,6 +32,14 @@ endif()
 
 if(MSVC)
     add_definitions(-DNOMINMAX)
+    add_definitions(-Dfseeko64=_fseeki64)
+    add_definitions(-Dftello64=_ftelli64)
+endif()
+
+if(APPLE)
+    # File operations are always 64 bit on macOS.
+    add_definitions(-Dfseeko64=fseeko)
+    add_definitions(-Dftello64=ftello)
 endif()
 
 set(CMAKE_AUTOMOC ON)
