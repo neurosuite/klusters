@@ -62,7 +62,7 @@ jobs:
           export QMAKE=/usr/lib/qt6/bin/qmake LDAI_OUTPUT=Klusters-${GITHUB_REF_NAME#v}-x86_64.AppImage
           ./linuxdeploy-x86_64.AppImage --appdir AppDir --plugin qt --output appimage \
             --desktop-file AppDir/usr/share/applications/io.github.neurosuite.Klusters.desktop
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: linux
           path: |
@@ -93,7 +93,7 @@ jobs:
             -DFETCHCONTENT_SOURCE_DIR_NEUROSUITE=$PWD/libneurosuite
           cmake --build build
           (cd build && cpack -G DragNDrop -R "$PKG_VERSION")
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: macos
           path: build/*.dmg
@@ -124,7 +124,7 @@ jobs:
           cmake --build build
           cd build
           cpack -G "NSIS;ZIP" -R "${{ env.PKG_VERSION }}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: windows
           path: |
